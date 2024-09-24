@@ -47,7 +47,7 @@ def loadIntro():
         print("Valid username and password")
         if database.addUser(userVar, passVar): 
             root.destroy() 
-            introduction.startintroduction() 
+            introduction.startintroduction(userVar) 
     else: 
         print("invalid pass") 
         messagebox.askretrycancel("Error", "Invalid username or password, try again") 

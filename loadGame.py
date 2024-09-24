@@ -4,6 +4,9 @@ import questions
 import sqlite3
 from tkinter import messagebox
 
+root = Tk()
+root.withdraw()
+
 def loadUserProgress(username, password):
      conn = sqlite3.connect('iqeqdatabase.db')
      cursor = conn.cursor()
@@ -14,10 +17,9 @@ def loadUserProgress(username, password):
 
 
 def startloadGame():
-     window = Tk()
-     window.geometry("600x400") 
-
-     title = Label(window, text = "Load Game")
+     window = Toplevel() 
+     window.geometry("600x400")
+     window.title("Load Game")
      
      loadTextOne = Label(window, text = "Enter usename")
      loadTextTwo = Label(window, text  = "Enter password")
@@ -38,15 +40,16 @@ def startloadGame():
                user_id, username, password, current_question, score = user_data 
                messagebox.showinfo("success", f"welcome back, {username}!")
                window.destroy()
-               question_page_root = Toplevel()
-               questions.QuizApp(username, current_question, score)
+               quizWindow = Toplevel(root)
+               app = questions.QuizApp(username, current_question, score)
+               quizWindow.mainloop()
           else:
                messagebox.showerror("Error", "Invalid username or password")
 
-
+     
      loadButton = Button(window, text = "Submit",command = handlesubmit)
 
-     title.grid(row = 0, column = 0)
+     window.title.grid(row = 0, column = 0)
      loadTextOne.grid(row = 1, column = 0)
      loadTextTwo.grid(row = 2, column = 0)
      loadBox.grid(row = 1, column = 1)
@@ -56,9 +59,10 @@ def startloadGame():
      window.mainloop()
 
 def startQuizApp(user_id, username, current_question = 0, score = 0):
-     root = Tk()
-     app = questions.QuizApp(root, user_id, username, current_question, score)
-     root.mainloop() 
+     root.withdraw()
+     quizWindow = Toplevel(root)
+     app = questions.QuizApp(quizWindow, user_id, username, current_question, score)
+     quizWindow.mainloop() 
 
 def loadUserProgress(username, password):
      conn = sqlite3.connect('iqeqDatabase.db')
